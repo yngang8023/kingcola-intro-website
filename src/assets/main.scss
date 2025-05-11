@@ -1,0 +1,35 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+}
+a{
+  color: #000;
+  text-decoration: none;
+}
+.icon{
+  width: 1em;
+  height: 1em;
+}
+p,span{
+  cursor: default;
+}
+/* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+  font-family: "阿里妈妈灵动体 VF Thin";src: url("//at.alicdn.com/wf/webfont/i7OBlFN3Zhyb/CLvHeGDMP7Tj.woff2") format("woff2"),
+  url("//at.alicdn.com/wf/webfont/i7OBlFN3Zhyb/I2ROozgmBJkV.woff") format("woff");
+  font-display: swap;
+}
+/* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+  font-family: "思源宋体 ExtraLight";font-weight: 250;src: url("//at.alicdn.com/wf/webfont/i7OBlFN3Zhyb/pMBjolMINxnV.woff2") format("woff2"),
+  url("//at.alicdn.com/wf/webfont/i7OBlFN3Zhyb/6LIK7I0PA7gj.woff") format("woff");
+  font-display: swap;
+}
+/* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+  font-family: "思源宋体 ExtraLight";font-weight: 250;src: url("//at.alicdn.com/wf/webfont/i7OBlFN3Zhyb/jxsEkpBhTtV7.woff2") format("woff2"),
+  url("//at.alicdn.com/wf/webfont/i7OBlFN3Zhyb/a3poDW4rEeDg.woff") format("woff");
+  font-display: swap;
+}
