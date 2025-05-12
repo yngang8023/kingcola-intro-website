@@ -1,149 +1,331 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const isLoading = ref(true)
+const activeIndex = ref(null)
 
 const classIfy = ref([
   {
     id: 1,
     className: '前端开发',
-    classIntroduce:
-      '了解前端相关知识，想要开发网页、app、微信小程序或者对此有强烈的兴趣'
+    classIntroduce: '了解前端相关知识，想要开发网页、app、微信小程序或者对此有强烈的兴趣',
+    color: '#5ec5df'
   },
   {
     id: 2,
     className: '后端开发',
-    classIntroduce:
-      '了解后端相关知识，想要开发网页、app、微信小程序或者对此有强烈的兴趣'
+    classIntroduce: '了解后端相关知识，想要开发网页、app、微信小程序或者对此有强烈的兴趣',
+    color: '#8f7eda'
   },
   {
     id: 3,
     className: '机器学习',
-    classIntroduce: '了解或者对机器学习、计算机视觉感兴趣'
+    classIntroduce: '了解或者对机器学习、计算机视觉感兴趣',
+    color: '#f89860'
   },
   {
     id: 4,
     className: '嵌入式开发',
-    classIntroduce: '对树莓派、常规单片机有一定的了解或者强烈学习欲望'
+    classIntroduce: '对树莓派、常规单片机有一定的了解或者强烈学习欲望',
+    color: '#5ab552'
   },
   {
     id: 5,
     className: '产品设计',
-    classIntroduce:
-      '有外观设计、logo设计、视频剪辑、动画制作、3D建模、宣传设计等相关基础'
+    classIntroduce: '有外观设计、logo设计、视频剪辑、动画制作、3D建模、宣传设计等相关基础',
+    color: '#e8556e'
   },
   {
     id: 6,
     className: '策划运营',
-    classIntroduce:
-      '对商业运营、产品模式、财务分析等有一定的了解，或者文字功底较强'
+    classIntroduce: '对商业运营、产品模式、财务分析等有一定的了解，或者文字功底较强',
+    color: '#f7d046'
   }
 ])
+
+const handleMouseEnter = (index) => {
+  activeIndex.value = index
+}
+
+const handleMouseLeave = () => {
+  activeIndex.value = null
+}
+
+const handleApply = (className) => {
+  router.push({
+    path: '/registration',
+    query: { className }
+  })
+}
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 500)
+})
 </script>
 
 <template>
-  <div class="container2">
-    <ul class="card">
-      <li class="cardContent" v-for="(item, index) in classIfy" :key="index">
-        <div class="cardTitle">
-          {{ item.className }}
-        </div>
-        <div class="cardIntroduce">
-          {{ item.classIntroduce }}
-        </div>
+  <div class="signup-container">
+    <div class="page-header">
+      <h1 class="main-title">加入我们</h1>
+      <p class="sub-title">选择你感兴趣的方向，开启你的科技之旅</p>
+    </div>
 
-        <div class="button">
-          <router-link
-            :to="{
-              path: '/registration',
-              query: { className: item.className }
-            }"
-            ><el-button round plain color="#fffff"
-              >申请岗位</el-button
-            ></router-link
-          >
+    <div class="card-container" v-if="!isLoading">
+      <div class="card-wrapper" v-for="(item, index) in classIfy" :key="index" @mouseenter="handleMouseEnter(index)"
+        @mouseleave="handleMouseLeave()" :class="{ 'card-active': activeIndex === index }">
+        <div class="card-content" :style="{ '--card-color': item.color }">
+          <div class="card-icon">
+            <img :src="`/src/assets/${item.className}.png`" :alt="item.className" />
+          </div>
+          <div class="card-title">
+            {{ item.className }}
+          </div>
+          <div class="card-intro">
+            {{ item.classIntroduce }}
+          </div>
+          <div class="card-action">
+            <el-button type="primary" round @click="handleApply(item.className)">
+              申请岗位
+              <i class="el-icon-arrow-right"></i>
+            </el-button>
+          </div>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
+
+    <div class="loading-container" v-else>
+      <el-skeleton :rows="6" animated />
+    </div>
+
+    <!-- <footContent /> -->
   </div>
 </template>
 
 <style scoped lang="scss">
-.container2 {
+.signup-container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
+  background: linear-gradient(135deg, #232222 0%, #434343 100%);
+  padding: 2rem 0 4rem;
+  overflow: hidden;
 
-  .card {
-    margin-top: 10vh;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    text-align: center;
-    .cardContent {
-      .button {
-        margin-top: 6vh;
-      }
-      width: 18vw;
-      margin-right: 10vw;
-      height: 40vh;
-      color: #e3e3e3fa;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(4px);
-      box-shadow:
-        inset 1px 1px 6px rgba(181, 181, 181, 0.3),
-        2px 2px 15px rgba(0, 0, 0, 0.5);
+  &::before {
+    content: '';
+    position: absolute;
+    top: -12vh;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(#5ec5df, #1d8fb5);
+    opacity: 0.6;
+    clip-path: circle(100% at 0% 0%);
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    bottom: -10vh;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(#bc8cf7, #8f7eda);
+    opacity: 0.6;
+    clip-path: circle(100% at 100% 100%);
+  }
+}
+
+.page-header {
+  text-align: center;
+  padding: 2rem 1rem;
+  position: relative;
+  z-index: 1;
+
+  .main-title {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
     }
-    .cardContent:first-child,
-    .cardContent:nth-child(4) {
-      margin-left: 7vw;
-    }
-    .cardContent:nth-child(-n + 3) {
-      margin-bottom: 5vh;
+  }
+
+  .sub-title {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-top: 0.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
     }
   }
 }
-.cardTitle {
-  margin-top: 1vw;
-  font-size: 1.3em;
-}
-.cardIntroduce {
-  margin-top: 2vw;
-  padding: 0 5px;
-  font-size: 0.9em;
-}
-.container2::before {
-  content: '';
-  position: absolute;
-  top: -12vh;
-  left: 0;
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(#5ec5df, #1d8fb5);
-  opacity: 0.8;
-  clip-path: circle(100% at 0% 0%);
-}
-.container2::after {
-  content: '';
-  position: absolute;
-  z-index: 0;
-  top: 66.8vh;
-  right: 0;
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(#bc8cf7, #8f7eda);
-  opacity: 0.8;
-  clip-path: circle(100% at 100% 100%);
-}
-.container3 {
-  width: 90vw;
-  height: 500px;
-}
-.container3-box1 {
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
-  transform: translate(160px, 75px);
-  background-color: #878787;
-  width: 70vw;
-  height: 80%;
-  border-radius: 1%;
-  opacity: 0.8;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+  }
+}
+
+.card-wrapper {
+  flex: 0 0 calc(33.333% - 2rem);
+  max-width: 350px;
+  transition: all 0.3s ease-in-out;
+
+  @media (max-width: 1024px) {
+    flex: 0 0 calc(50% - 2rem);
+  }
+
+  @media (max-width: 768px) {
+    flex: 0 0 100%;
+    max-width: 450px;
+  }
+
+  &.card-active {
+    transform: translateY(-10px);
+
+    .card-content {
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+
+      &::before {
+        opacity: 0.7;
+      }
+
+      .card-icon img {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+.card-content {
+  position: relative;
+  background: rgba(30, 30, 30, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem 1.5rem;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--card-color);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.card-icon {
+  margin-bottom: 1.5rem;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+    transition: all 0.3s ease;
+  }
+}
+
+.card-title {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.card-intro {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.card-action {
+  width: 100%;
+  margin-top: 1rem;
+
+  .el-button {
+    background-color: var(--card-color);
+    border-color: var(--card-color);
+    padding: 10px 25px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+
+    &:hover,
+    &:focus {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.loading-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-wrapper {
+  animation: fadeIn 0.5s ease-out forwards;
+
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
 }
 </style>

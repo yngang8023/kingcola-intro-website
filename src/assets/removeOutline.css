@@ -1,0 +1,89 @@
+/* 
+  移除元素点击时的框印效果
+  特别针对导航菜单和活动元素
+*/
+
+/* 所有菜单项移除轮廓和阴影 */
+.el-menu-item,
+.el-submenu__title,
+.el-tabs__item,
+.router-link-active,
+[class*="nav-item"],
+[class*="menu-item"],
+header a, 
+nav a,
+.el-button,
+.el-tag,
+.el-dropdown-menu__item {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* 移除特定于选中状态的边框样式 */
+.is-active,
+.router-link-active,
+.router-link-exact-active {
+  border-color: #00f3ff !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 移除点击后的边框 */
+a:active, 
+button:active,
+[role="button"]:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+/* 导航菜单特定样式 */
+.el-menu--horizontal > .el-menu-item:focus,
+.el-menu--horizontal > .el-menu-item:hover,
+.el-menu--horizontal > .el-menu-item.is-active {
+  background-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 修复Element Plus导航组件在点击后的轮廓问题 */
+.el-menu--popup .el-menu-item:focus,
+.el-dropdown-menu__item:focus,
+.el-select-dropdown__item:focus,
+.el-cascader-node:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 修复列表和卡片选中效果 */
+.el-table__row.current-row td,
+.el-table__row:hover td,
+.el-card:focus,
+.el-collapse-item__header:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 对所有标签元素应用无轮廓样式 */
+div, p, h1, h2, h3, h4, h5, h6, span, ul, li, ol, dl, dt, dd, 
+form, input, textarea, select, button, img, svg, path {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* 覆盖所有鼠标点击时的高亮效果 */
+*::selection {
+  background-color: rgba(0, 243, 255, 0.2) !important;
+}
+
+/* 确保键盘导航用户仍能看到焦点 */
+*:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+*:focus-visible {
+  outline: 2px solid rgba(0, 243, 255, 0.5) !important;
+  outline-offset: 2px !important;
+} 

@@ -33,3 +33,59 @@ p,span{
   url("//at.alicdn.com/wf/webfont/i7OBlFN3Zhyb/a3poDW4rEeDg.woff") format("woff");
   font-display: swap;
 }
+
+// 移除Element Plus组件的框印移除样式
+
+// 移除Element Plus导航项的点击框印
+.el-menu-item:focus,
+.el-menu-item:active,
+.el-submenu__title:focus,
+.el-submenu__title:active,
+.el-tabs__item:focus,
+.el-tabs__item:active,
+.el-button:focus,
+.el-button:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+// 移除导航项的点击效果
+.el-menu--horizontal > .el-menu-item.is-active {
+  border-bottom-color: var(--el-menu-active-color, #00f3ff) !important;
+  box-shadow: none !important;
+}
+
+// 覆盖Element Plus默认的点击样式
+.el-button:focus:not(.is-disabled),
+.el-button:hover:not(.is-disabled) {
+  outline: none;
+  box-shadow: none !important;
+}
+
+// 移除鼠标点击时的外边框高亮
+.el-radio__input.is-checked .el-radio__inner,
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-switch.is-checked .el-switch__core {
+  border-color: #00f3ff !important;
+  box-shadow: none !important;
+}
+
+// 移除导航项的点击框印
+.nav-item:focus,
+.nav-link:focus,
+nav a:focus,
+header a:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+// 确保自定义菜单项也不显示框印
+[class*="menu-"],
+[class*="nav-"] {
+  a, button, [role="button"], [tabindex] {
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+}

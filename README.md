@@ -1,35 +1,79 @@
-# kingCola
+# KingCola-ICG 官网
 
-This template should help get you started developing with Vue 3 in Vite.
+## 项目概述
 
-## Recommended IDE Setup
+KingCola-ICG 官网是一个具有未来科技感的现代化网站，采用 Vue 3 和 Vite 构建。该网站设计以创新技术为主题，通过丰富的视觉效果和交互体验，打造沉浸式的用户访问体验。
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## 视觉特效
 
-## Customize configuration
+网站包含多种高级视觉效果：
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- **星空背景**：动态生成的星空效果，创造深邃的太空感
+- **数字雨效果**：赛博朋克风格的代码雨，增强科技感
+- **霓虹光环**：脉动的霓虹圆环，提供现代感
+- **粒子系统**：基于 Three.js 的 3D 粒子效果
+- **流光效果**：动态流动的光线和数据流
+- **全息UI元素**：全息投影式界面元素
+- **雷达扫描**：模拟雷达扫描的视觉效果
+- **科技网格**：动态变化的背景网格
 
-## Project Setup
+## 交互体验
+
+- **鼠标跟随效果**：光标移动时产生光晕和轨迹
+- **点击动画**：用户点击时触发涟漪和粒子爆发效果
+- **精美过渡**：点击"进入官网"按钮时，展示流畅的加载动画
+- **自适应设计**：完全响应式，适配桌面和移动设备
+
+## 技术亮点
+
+- **Vue 3 组合式 API**：利用 `setup` 脚本和组合式 API 构建
+- **Three.js 集成**：创建 3D 粒子系统和沉浸式背景
+- **CSS 动画**：大量使用 CSS3 高级动画效果
+- **性能优化**：针对不同设备进行性能调优
+- **渐进式加载**：平滑的页面过渡和加载体验
+
+## 设计理念
+
+网站设计理念围绕"创新技术·未来体验"的主题，通过视觉元素表达科技创新和未来感。采用霓虹蓝、深空黑等色调，配合流动的光效，打造出独特的科技氛围。
+
+## 开发与部署
+
+### 开发环境设置
 
 ```sh
+# 安装依赖
 pnpm install
-```
+npm install
 
-### Compile and Hot-Reload for Development
-
-```sh
+# 开发模式运行
 pnpm dev
-```
+npm run dev
 
-### Compile and Minify for Production
-
-```sh
+# 构建生产版本
 pnpm build
-```
+npm run build
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
+# 代码质量检查
 pnpm lint
 ```
+
+### 技术栈
+
+- **前端框架**：Vue 3
+- **构建工具**：Vite
+- **3D 渲染**：Three.js
+- **样式**：SCSS
+- **路由**：Vue Router
+
+## 性能考量
+
+网站进行了多项性能优化：
+
+- 移动设备上自动减少效果密度
+- 条件性渲染复杂动画
+- 优化图像和动画资源
+- 平滑的加载体验和过渡动画
+
+---
+
+KingCola-ICG 官网展示了现代网页设计与交互的可能性，通过艺术与技术的结合，创造出令人印象深刻的数字体验。
