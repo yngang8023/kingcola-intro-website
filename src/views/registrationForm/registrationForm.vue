@@ -5,12 +5,33 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { submitRegistration } from '@/api/registrationAPI.js'
 import footContent from '@/component/footCotent/footContent.vue'
+import frontendIcon from '@/assets/前端开发.png'
+import backendIcon from '@/assets/后端开发.png'
+import mlIcon from '@/assets/机器学习.png'
+import embeddedIcon from '@/assets/嵌入式开发.png'
+import productIcon from '@/assets/产品设计.png'
+import planningIcon from '@/assets/策划运营.png'
 
 const route = useRoute()
 const router = useRouter()
 const isSubmitting = ref(false)
 const isFormComplete = ref(false)
 const form = ref()
+
+// 图标映射
+const iconMap = {
+  '前端开发': frontendIcon,
+  '后端开发': backendIcon,
+  '机器学习': mlIcon,
+  '嵌入式开发': embeddedIcon,
+  '产品设计': productIcon,
+  '策划运营': planningIcon
+}
+
+// 获取图标路径的函数
+const getIconPath = (className) => {
+  return iconMap[className] || ''
+}
 
 // 获取岗位类型
 let TclassName = route.query.className || '前端开发'
@@ -285,7 +306,7 @@ onMounted(() => {
       <div class="info-panel">
         <div class="direction-info">
           <div class="direction-icon">
-            <img :src="`/src/assets/${TclassName}.png`" :alt="TclassName" />
+            <img :src="getIconPath(TclassName)" :alt="TclassName" />
           </div>
           <h2 class="direction-title">{{ TclassName }}</h2>
           <div class="direction-desc">{{ TclassIntroduce }}</div>
