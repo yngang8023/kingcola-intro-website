@@ -220,6 +220,13 @@ const enterWebsite = () => {
   loadingOverlay.style.display = 'flex'
   loadingOverlay.style.justifyContent = 'center'
   loadingOverlay.style.alignItems = 'center'
+  // 强化硬件加速
+  loadingOverlay.style.transform = 'translateZ(0)'
+  loadingOverlay.style.willChange = 'opacity, transform'
+  loadingOverlay.style.backfaceVisibility = 'hidden'
+  loadingOverlay.style.perspective = '1000px'
+  loadingOverlay.style.webkitFontSmoothing = 'antialiased'
+  loadingOverlay.style.transition = 'none' // 创建时不使用过渡动画
 
   // 添加loading容器
   const loadingContainer = document.createElement('div')
@@ -234,7 +241,12 @@ const enterWebsite = () => {
   loadingContainer.style.border = '1px solid rgba(0, 243, 255, 0.2)'
   loadingContainer.style.width = '90%'
   loadingContainer.style.maxWidth = '500px'
-  loadingContainer.style.animation = 'pulseGlow 3s infinite'
+  loadingContainer.style.transform = 'translateZ(0)' // 添加硬件加速
+  loadingContainer.style.willChange = 'transform' // 优化动画性能
+  loadingContainer.style.backfaceVisibility = 'hidden'
+  loadingContainer.style.webkitFontSmoothing = 'antialiased'
+  loadingContainer.style.opacity = '0' // 初始设为不可见
+  loadingContainer.style.transition = 'opacity 0.3s ease'
 
   // 创建LOGO区域 - 使用内联SVG代替图片，避免加载问题
   const logoContainer = document.createElement('div')
@@ -248,11 +260,11 @@ const enterWebsite = () => {
   logoContainer.style.alignItems = 'center'
   logoContainer.style.marginBottom = '20px'
   logoContainer.style.boxShadow = '0 0 20px rgba(0, 243, 255, 0.6)'
-  logoContainer.style.animation = 'rotate 10s linear infinite'
+  logoContainer.style.transform = 'translateZ(0)' // 添加硬件加速
 
-  // 使用一个简单的SVG代替logo图片
+  // 简化SVG，减少复杂度
   logoContainer.innerHTML = `
-    <svg width="70" height="70" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="70" height="70" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: translateZ(0);">
       <circle cx="50" cy="50" r="45" stroke="#00f3ff" stroke-width="2" />
       <path d="M30 30 L70 70" stroke="#00f3ff" stroke-width="4" />
       <path d="M70 30 L30 70" stroke="#00f3ff" stroke-width="4" />
@@ -267,14 +279,9 @@ const enterWebsite = () => {
   loadingTitle.style.fontSize = '2.2rem'
   loadingTitle.style.fontWeight = 'bold'
   loadingTitle.style.margin = '0 0 25px 0'
-  loadingTitle.style.background = 'linear-gradient(90deg, #00f3ff, #0072ff, #7b00ff, #00f3ff)'
-  loadingTitle.style.backgroundSize = '300% 100%'
-  loadingTitle.style.webkitBackgroundClip = 'text'
-  loadingTitle.style.webkitTextFillColor = 'transparent'
-  loadingTitle.style.backgroundClip = 'text'
-  loadingTitle.style.color = 'transparent'
-  loadingTitle.style.animation = 'textGradientMove 8s linear infinite'
+  loadingTitle.style.color = '#00f3ff' // 使用纯色替代复杂渐变
   loadingTitle.style.textShadow = '0 0 10px rgba(0, 243, 255, 0.7)'
+  loadingTitle.style.transform = 'translateZ(0)' // 添加硬件加速
 
   // 创建进度条容器
   const progressContainer = document.createElement('div')
@@ -286,29 +293,18 @@ const enterWebsite = () => {
   progressContainer.style.overflow = 'hidden'
   progressContainer.style.marginBottom = '15px'
   progressContainer.style.position = 'relative'
-
-  // 创建光晕效果
-  const progressGlow = document.createElement('div')
-  progressGlow.style.position = 'absolute'
-  progressGlow.style.top = '0'
-  progressGlow.style.left = '0'
-  progressGlow.style.height = '100%'
-  progressGlow.style.width = '60px'
-  progressGlow.style.background = 'linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.7), transparent)'
-  progressGlow.style.animation = 'progressGlowMove 2s ease-in-out infinite'
-  progressContainer.appendChild(progressGlow)
+  progressContainer.style.transform = 'translateZ(0)' // 添加硬件加速
 
   // 创建进度条
   const progressBar = document.createElement('div')
   progressBar.className = 'progress-bar'
   progressBar.style.height = '100%'
   progressBar.style.width = '0%'
-  progressBar.style.background = 'linear-gradient(90deg, #00c6ff, #0072ff, #00ffe7)'
-  progressBar.style.backgroundSize = '200% 100%'
+  progressBar.style.background = '#00c6ff' // 使用纯色替代复杂渐变
   progressBar.style.borderRadius = '5px'
-  progressBar.style.transition = 'width 0.2s linear'
+  progressBar.style.transition = 'width 0.1s linear' // 加快过渡时间
   progressBar.style.boxShadow = '0 0 10px rgba(0, 243, 255, 0.7)'
-  progressBar.style.animation = 'gradientMove 2s linear infinite'
+  progressBar.style.transform = 'translateZ(0)' // 添加硬件加速
   progressContainer.appendChild(progressBar)
 
   // 创建进度文本
@@ -318,6 +314,7 @@ const enterWebsite = () => {
   progressText.style.fontSize = '1rem'
   progressText.style.color = 'white'
   progressText.style.marginBottom = '10px'
+  progressText.style.transform = 'translateZ(0)' // 添加硬件加速
 
   // 创建加载消息
   const loadingMessage = document.createElement('div')
@@ -327,17 +324,17 @@ const enterWebsite = () => {
   loadingMessage.style.color = 'rgba(255, 255, 255, 0.9)'
   loadingMessage.style.textAlign = 'center'
   loadingMessage.style.height = '24px'
+  loadingMessage.style.transform = 'translateZ(0)' // 添加硬件加速
 
-  // 添加进度光标动画
+  // 添加更简单的CSS动画
   const style = document.createElement('style')
   style.textContent = `
-    @keyframes progressGlowMove {
-      0%, 100% { transform: translateX(-100%); }
-      50% { transform: translateX(100%); }
-    }
     @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% { transform: rotate(0deg) translateZ(0); }
+      100% { transform: rotate(360deg) translateZ(0); }
+    }
+    .loading-logo {
+      animation: rotate 10s linear infinite;
     }
   `
   document.head.appendChild(style)
@@ -352,6 +349,10 @@ const enterWebsite = () => {
 
   // 确保在DOM中添加加载动画
   document.body.appendChild(loadingOverlay)
+
+  // 强制重排，然后显示容器
+  void loadingOverlay.offsetWidth // 触发重排
+  loadingContainer.style.opacity = '1' // 平滑显示容器
 
   // 恢复滚动条
   document.documentElement.style.overflow = 'auto'
@@ -372,22 +373,12 @@ const enterWebsite = () => {
     appElement.style.height = 'auto'
   }
 
-  // 预加载ourIntroduce页面的关键资源
+  // 简化的预加载资源函数
   const preloadResources = () => {
-    // 预加载团队介绍页面的关键图片
+    // 预加载团队介绍页面的关键图片，简化数量
     const imagesToPreload = [
       '/src/assets/logo.png',
-      '/src/assets/标志2.png',
-      '/src/assets/前端开发.png',
-      '/src/assets/后端开发.png',
-      '/src/assets/机器学习.png',
-      '/src/assets/嵌入式开发.png',
-      '/src/assets/产品设计.png',
-      '/src/assets/策划运营.png',
-      '/src/assets/工作环境.jpg',
-      '/src/assets/团建.jpg',
-      '/src/assets/总结大会.jpg',
-      '/src/assets/小组会议.jpg'
+      '/src/assets/标志2.png'
     ]
 
     // 加载提示信息数组
@@ -395,124 +386,64 @@ const enterWebsite = () => {
       '正在加载团队介绍...',
       '正在准备团队数据...',
       '加载团队成员信息...',
-      '解析团队历史数据...',
-      '渲染团队成果展示...',
-      '正在加载前端技术栈...',
-      '正在加载后端技术栈...',
-      '读取团队项目数据...',
-      '准备团队历程时间线...',
-      '优化界面展示效果...',
-      '即将完成，请稍候...',
-      '加载完成，即将进入...'
+      '即将完成，请稍候...'
     ]
 
-    let loadedCount = 0
-    const totalResources = imagesToPreload.length
-    // 人为放慢加载速度的因子（值越大加载越慢）
-    const slowdownFactor = 3.5
-    // 初始进度值
+    const totalResources = imagesToPreload.length + 4; // 图片 + 虚拟资源
     let currentProgress = 0
 
-    // 更新加载进度的函数
-    const updateProgress = (current, total) => {
-      // 计算实际百分比
-      const actualPercentage = Math.min(Math.round((current / total) * 100), 100)
+    // 更新进度条的函数 - 使用RAF优化性能
+    const updateProgress = (progress) => {
+      const targetProgress = Math.min(Math.floor(progress), 100)
+      progressBar.style.width = `${targetProgress}%`
+      progressText.textContent = `${targetProgress}%`
 
-      // 平滑过渡到目标进度
-      const updateProgressBar = () => {
-        if (currentProgress < actualPercentage) {
-          currentProgress += 1
-          progressBar.style.width = `${currentProgress}%`
-          progressText.textContent = `${currentProgress}%`
+      // 根据进度更新消息
+      const messageIndex = Math.floor(targetProgress / (100 / loadingMessages.length))
+      const safeIndex = Math.min(messageIndex, loadingMessages.length - 1)
+      loadingMessage.textContent = loadingMessages[safeIndex]
 
-          // 根据进度更新消息
-          const messageIndex = Math.floor(currentProgress / (100 / loadingMessages.length))
-          const safeIndex = Math.min(messageIndex, loadingMessages.length - 1)
-          loadingMessage.textContent = loadingMessages[safeIndex]
-
-          // 当达到100%时，显示最终消息并准备跳转
-          if (currentProgress === 100) {
-            loadingMessage.textContent = loadingMessages[loadingMessages.length - 1]
-
-            // 延迟跳转，让用户看到100%的状态
-            setTimeout(() => {
-              // 存储加载状态，以便目标页面可以检测到页面来源
-              sessionStorage.setItem('loadingFromStartPage', 'true')
-
-              // 确保过渡覆盖层保留到目标页面加载
-              loadingOverlay.setAttribute('data-preserve', 'true')
-
-              // 跳转到团队介绍页面
-              router.push('/go')
-            }, 1000)
-          } else {
-            // 继续更新进度条，根据当前进度动态调整速度（越接近100%越慢）
-            const delayFactor = currentProgress > 80 ? slowdownFactor * 1.5 : slowdownFactor
-            setTimeout(updateProgressBar, delayFactor * 45)
-          }
-        }
+      // 到达100%准备跳转
+      if (targetProgress === 100) {
+        setTimeout(() => {
+          sessionStorage.setItem('loadingFromStartPage', 'true')
+          loadingOverlay.setAttribute('data-preserve', 'true')
+          router.push('/go')
+        }, 300) // 减少等待时间
       }
-
-      // 开始更新进度条
-      updateProgressBar()
     }
 
-    // 设置初始进度
-    updateProgress(0, totalResources)
+    // 更简单的加载进度逻辑
+    let loadedCount = 0;
+    let timer = null;
 
-    // 预加载所有图片
+    // 处理图片加载
     imagesToPreload.forEach(imgSrc => {
-      const img = new Image()
+      const img = new Image();
       img.onload = img.onerror = () => {
-        loadedCount++
-        updateProgress(loadedCount, totalResources)
+        loadedCount++;
+        // 计算加载进度 (每个图片权重40%)
+        const imgProgress = (loadedCount / imagesToPreload.length) * 40;
+        updateProgress(imgProgress);
+      };
+      img.src = imgSrc;
+    });
+
+    // 模拟其余资源加载，使用setTimeout平滑增加进度
+    let fakeProgress = 40;
+    timer = setInterval(() => {
+      fakeProgress += 2;
+      if (fakeProgress >= 100) {
+        clearInterval(timer);
+        updateProgress(100);
+      } else {
+        updateProgress(fakeProgress);
       }
-      img.src = imgSrc
-    })
-
-    // 设置超时，即使资源没完全加载也会确保进度达到100%
-    setTimeout(() => {
-      if (currentProgress < 100) {
-        // 强制完成剩余进度
-        const remainingSteps = 100 - currentProgress
-        let step = 0
-
-        const completeProgress = () => {
-          currentProgress += 1
-          progressBar.style.width = `${currentProgress}%`
-          progressText.textContent = `${currentProgress}%`
-
-          // 更新最终阶段的消息
-          const messageIndex = Math.floor(currentProgress / (100 / loadingMessages.length))
-          const safeIndex = Math.min(messageIndex, loadingMessages.length - 1)
-          loadingMessage.textContent = loadingMessages[safeIndex]
-
-          step++
-
-          if (currentProgress < 100) {
-            // 最后阶段的进度慢一些
-            const finalDelay = Math.min(120, 50 + currentProgress);
-            setTimeout(completeProgress, finalDelay)
-          } else {
-            loadingMessage.textContent = loadingMessages[loadingMessages.length - 1]
-
-            // 延迟跳转，让用户看到100%的状态
-            setTimeout(() => {
-              // 确保过渡覆盖层保留到目标页面加载
-              loadingOverlay.setAttribute('data-preserve', 'true')
-              sessionStorage.setItem('loadingFromStartPage', 'true')
-              router.push('/go')
-            }, 1000)
-          }
-        }
-
-        completeProgress()
-      }
-    }, 15000) // 延长超时时间至15秒
+    }, 100);
   }
 
-  // 开始预加载资源
-  setTimeout(preloadResources, 300)
+  // 立即开始预加载，无需延迟
+  preloadResources();
 }
 
 // 检测是否为移动设备
@@ -897,10 +828,15 @@ const initThreeJsScene = () => {
 
     threeRenderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: true
+      antialias: true,
+      powerPreference: 'high-performance', // 优先使用高性能模式
+      precision: isMobile.value ? 'mediump' : 'highp', // 移动端使用中等精度
+      stencil: false, // 关闭不需要的缓冲区
+      depth: true,
+      logarithmicDepthBuffer: false
     })
     threeRenderer.setSize(window.innerWidth, window.innerHeight)
-    threeRenderer.setPixelRatio(window.devicePixelRatio)
+    threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)) // 限制像素比，提高性能
     threeContainer.value.appendChild(threeRenderer.domElement)
 
     // 创建粒子系统
@@ -977,26 +913,39 @@ const animateThreeJs = () => {
 
   const elapsedTime = clock.getElapsedTime()
 
-  // 旋转粒子系统
+  // 旋转粒子系统 - 减少移动端旋转速度
   if (particles) {
-    particles.rotation.x = elapsedTime * 0.05
-    particles.rotation.y = elapsedTime * 0.03
+    const rotationSpeed = isMobile.value ? 0.02 : 0.05;
+    particles.rotation.x = elapsedTime * rotationSpeed
+    particles.rotation.y = elapsedTime * (rotationSpeed * 0.6)
 
-    // 更新粒子大小
-    const sizes = particlesGeometry.attributes.size.array
+    // 更新粒子大小 - 移动端减少更新频率
+    if (!isMobile.value || Math.floor(elapsedTime * 2) % 3 === 0) {
+      const sizes = particlesGeometry.attributes.size.array
 
-    for (let i = 0; i < sizes.length; i++) {
-      sizes[i] = Math.abs(Math.sin(elapsedTime + i)) * 2
+      // 减少迭代次数
+      const updateInterval = isMobile.value ? 4 : 1;
+      for (let i = 0; i < sizes.length; i += updateInterval) {
+        sizes[i] = Math.abs(Math.sin(elapsedTime + i)) * 2
+      }
+
+      particlesGeometry.attributes.size.needsUpdate = true
     }
-
-    particlesGeometry.attributes.size.needsUpdate = true
   }
 
   // 渲染场景
   threeRenderer.render(threeScene, threeCamera)
 
-  // 继续动画循环
-  animationFrameId = requestAnimationFrame(animateThreeJs)
+  // 移动端降低刷新率
+  if (isMobile.value) {
+    // 使用16.7ms (约60fps)的节流，移动端可以用更低的刷新率
+    setTimeout(() => {
+      animationFrameId = requestAnimationFrame(animateThreeJs)
+    }, 20) // 约50fps，提高移动端性能
+  } else {
+    // 桌面端正常刷新率
+    animationFrameId = requestAnimationFrame(animateThreeJs)
+  }
 }
 
 // 清理Three.js资源
@@ -1653,6 +1602,13 @@ html:not(.start-page) {
   overflow: hidden !important;
   height: 100%;
   width: 100%;
+  /* 添加硬件加速 */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
 }
 
 /* 隐藏滚动条但保留功能 */
@@ -1675,6 +1631,13 @@ html:not(.start-page) {
   color: white;
   font-family: 'Rajdhani', sans-serif;
   box-sizing: border-box;
+  /* 加强硬件加速 */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 /* Three.js容器 */
@@ -4260,6 +4223,8 @@ html:not(.start-page) {
 
   .neon-circle {
     transform: scale(0.6) translate(-50%, -50%);
+    opacity: 0.5;
+    /* 降低透明度 */
   }
 
   .circle1 {
@@ -4277,13 +4242,21 @@ html:not(.start-page) {
     height: 500px;
   }
 
-  /* 减少移动端的粒子和效果数量以提高性能 */
-  .decorative-particle:nth-child(n+15),
-  .circuit-line:nth-child(n+6),
-  .floating-shape:nth-child(n+8),
-  .energy-pulse:nth-child(n+4),
-  .energy-arc:nth-child(n+3) {
-    display: none;
+  /* 大幅减少移动端的粒子和效果数量以提高性能 */
+  .decorative-particle:nth-child(n+10),
+  .circuit-line:nth-child(n+4),
+  .floating-shape:nth-child(n+5),
+  .energy-pulse:nth-child(n+3),
+  .energy-arc:nth-child(n+2),
+  .data-bar:nth-child(n+4),
+  .tech-element:nth-child(n+4),
+  .flowing-light:nth-child(n+5),
+  .glow-particle:nth-child(n+5),
+  .cyber-line:nth-child(n+3),
+  .data-stream:nth-child(n+2),
+  .data-flow:nth-child(n+5),
+  .data-particle:nth-child(n+8) {
+    display: none !important;
   }
 
   /* 移动端优化全屏布局 */
@@ -4299,7 +4272,50 @@ html:not(.start-page) {
   .cursor-follower,
   .cursor-trail,
   .tech-cursor {
-    display: none;
+    display: none !important;
+  }
+
+  /* 降低复杂特效强度 */
+  .grid-overlay {
+    opacity: 0.15 !important;
+    background-size: 60px 60px !important;
+  }
+
+  .scan-lines,
+  .hologram-effect,
+  .circuit-pattern,
+  .flying-data,
+  .digital-rain {
+    opacity: 0.12 !important;
+  }
+
+  /* 降低动画频率，减少闪烁 */
+  .light-beam,
+  .data-stream,
+  .neon-circle,
+  .flowing-line {
+    animation-duration: 15s !important;
+  }
+
+  /* 简化文字特效 */
+  .main-title,
+  .sub-title,
+  .tech-badge {
+    text-shadow: 0 0 5px rgba(0, 243, 255, 0.5) !important;
+    animation: none !important;
+  }
+
+  /* 移除复杂的光晕和发光效果 */
+  .cursor-glow,
+  .glow-overlay,
+  .pulse-border {
+    display: none !important;
+  }
+
+  /* 禁用背景主题切换 */
+  .container {
+    transition: none !important;
+    background: linear-gradient(135deg, #000428, #004e92) !important;
   }
 }
 
@@ -4563,4 +4579,197 @@ html:not(.start-page) {
     font-size: 0.9rem;
   }
 }
-</style>
+
+// 优化所有动画元素，添加硬件加速和减少不必要的动画
+.neon-circles,
+.light-beams,
+.flowing-lights-container,
+.data-flows-container,
+.tech-element,
+.grid-overlay,
+.circuit-line,
+.floating-shape,
+.energy-pulse,
+.decorative-particle,
+.energy-arc {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+// 移动端特殊优化
+@media (max-width: 768px) {
+
+  // 减少移动端的特效数量和复杂度
+  .neon-circle {
+    transform: scale(0.6) translate(-50%, -50%) translateZ(0);
+  }
+
+  // 隐藏部分复杂特效，减轻渲染负担
+  .radar-scan,
+  .data-visualization,
+  .hologram-ui,
+  .tech-panels,
+  .energy-arcs-container {
+    display: none;
+  }
+
+  // 减少粒子特效，提高性能
+  .grid-node:nth-child(n+10),
+  .flowing-light:nth-child(n+8),
+  .glow-particle:nth-child(n+10),
+  .data-particle:nth-child(n+10),
+  .decorative-particle:nth-child(n+12),
+  .energy-pulse:nth-child(n+4) {
+    display: none;
+  }
+
+  // 优化背景动画
+  .grid-overlay {
+    opacity: 0.2;
+    background-size: 60px 60px;
+  }
+
+  // 降低渲染复杂度
+  .scan-lines,
+  .hologram-effect,
+  .circuit-pattern {
+    opacity: 0.1;
+  }
+
+  // 简化按钮动画
+  .cyber-button .button-glitch,
+  .cyber-button .button-glitch-effect {
+    display: none;
+  }
+}
+
+// 优化页面过渡动画性能
+.page-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in-out;
+  backdrop-filter: blur(10px);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: opacity;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 500px;
+  background: rgba(13, 50, 77, 0.7);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+  border: 1px solid rgba(0, 243, 255, 0.1);
+  transition: all 0.5s ease;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00c6ff, #0072ff, #00ffe7);
+  background-size: 200% 100%;
+  border-radius: 10px;
+  animation: gradientMove 2s linear infinite;
+  transition: width 0.2s linear;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+// 优化主要动画元素
+.text-container {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.main-title {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: background-position;
+}
+
+// 降低部分不必要的动画复杂度
+@media (max-width: 768px) {
+
+  // 简化动画，减少帧率损耗
+  @keyframes animate {
+    0% {
+      opacity: 0;
+      transform: translateY(10px) translateZ(0);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0) translateZ(0);
+    }
+  }
+
+  // 减少动画时间，加快显示
+  .text {
+    animation-duration: 1s;
+  }
+
+  // 优化星空效果，减少星星数量
+  .stars-wrapper {
+    opacity: 0.6;
+  }
+
+  // 降低数字雨效果的复杂度
+  .digital-rain {
+    opacity: 0.1;
+  }
+
+  // 触摸设备不需要鼠标特效
+  .cursor-follower,
+  .cursor-trail,
+  .tech-cursor {
+    display: none !important;
+  }
+}
+
+// 优化渲染性能的动画
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateZ(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateZ(0);
+  }
+}
+
+// ... existing code ...</style>

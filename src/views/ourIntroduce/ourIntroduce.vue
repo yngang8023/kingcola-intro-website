@@ -2,6 +2,12 @@
 import MiddelTitle from '@/component/middelTitle.vue'
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useHead } from '@vueuse/head'
+import frontendIcon from '@/assets/前端开发.png'
+import backendIcon from '@/assets/后端开发.png'
+import mlIcon from '@/assets/机器学习.png'
+import embeddedIcon from '@/assets/嵌入式开发.png'
+import productIcon from '@/assets/产品设计.png'
+import planningIcon from '@/assets/策划运营.png'
 
 // SEO优化 - 增强版
 useHead({
@@ -167,6 +173,28 @@ const activeSection = ref(null)
 
 // 动画效果
 const animateOnScroll = () => {
+  // 在移动端使用节流逻辑优化性能
+  if (window.innerWidth <= 768) {
+    // 检查是否正在处理
+    if (animateOnScroll.ticking) return
+    animateOnScroll.ticking = true
+
+    // 使用requestAnimationFrame优化渲染
+    requestAnimationFrame(() => {
+      processScrollAnimation()
+      // 间隔100ms后才能再次触发处理
+      setTimeout(() => {
+        animateOnScroll.ticking = false
+      }, 100)
+    })
+  } else {
+    // 桌面端直接处理
+    processScrollAnimation()
+  }
+}
+
+// 提取实际处理滚动动画的逻辑到单独函数
+const processScrollAnimation = () => {
   const elements = document.querySelectorAll('.animate-on-scroll')
   const sections = document.querySelectorAll('section')
 
@@ -206,6 +234,9 @@ const animateOnScroll = () => {
   })
 }
 
+// 初始化节流状态
+animateOnScroll.ticking = false;
+
 // 平滑滚动到指定部分
 const scrollToSection = (sectionId) => {
   const element = document.querySelector(`.${sectionId}-section`)
@@ -215,6 +246,21 @@ const scrollToSection = (sectionId) => {
       behavior: 'smooth'
     })
   }
+}
+
+// 图标映射
+const iconMap = {
+  '前端开发': frontendIcon,
+  '后端开发': backendIcon,
+  '机器学习': mlIcon,
+  '嵌入式开发': embeddedIcon,
+  '产品设计': productIcon,
+  '策划运营': planningIcon
+}
+
+// 获取图标路径的函数
+const getIconPath = (className) => {
+  return iconMap[className] || ''
 }
 
 onMounted(() => {
@@ -262,115 +308,50 @@ onMounted(() => {
     const existingOverlay = document.querySelector('.page-transition-overlay[data-preserve="true"]')
 
     if (existingOverlay) {
-      // 找到了保留的过渡层，使用它
-      console.log('使用现有的过渡覆盖层')
+      // 先隐藏页面容器，避免在加载完成前显示
+      const introContainer = document.querySelector('.intro-container')
+      if (introContainer) {
+        introContainer.style.opacity = '0'
+        introContainer.style.visibility = 'hidden'
+      }
 
-      // 确保显示完整状态
+      // 使用硬件加速优化渲染
+      existingOverlay.style.transform = 'translateZ(0)'
+      existingOverlay.style.backfaceVisibility = 'hidden'
+      existingOverlay.style.perspective = '1000'
+      existingOverlay.style.willChange = 'opacity, transform'
+      existingOverlay.style.transition = 'opacity 0.6s ease'
+
+      // 找到加载容器元素
       const loadingContainer = existingOverlay.querySelector('.loading-container')
       const progressBar = existingOverlay.querySelector('.progress-bar')
       const progressText = existingOverlay.querySelector('.progress-text')
       const loadingMessage = existingOverlay.querySelector('.loading-message')
 
+      // 避免过度动画，直接设置为完成状态
       if (progressBar) progressBar.style.width = '100%'
       if (progressText) progressText.textContent = '100%'
       if (loadingMessage) loadingMessage.textContent = '加载完成，正在进入...'
 
-      // 等待一小段时间显示完整状态
+      // 平滑隐藏过渡层
       setTimeout(() => {
-        // 添加淡出动画
-        existingOverlay.style.opacity = '1'
-        existingOverlay.style.transition = 'opacity 0.8s ease'
+        existingOverlay.style.opacity = '0'
 
+        // 动画完成后显示内容
         setTimeout(() => {
-          existingOverlay.style.opacity = '0'
-
-          // 动画完成后移除元素
-          setTimeout(() => {
-            if (document.body.contains(existingOverlay)) {
-              document.body.removeChild(existingOverlay)
-            }
-
-            // 显示页面内容
-            const introContainer = document.querySelector('.intro-container')
-            if (introContainer) {
-              introContainer.classList.add('page-loaded')
-            }
-          }, 800)
-        }, 300)
-      }, 100)
-    } else if (document.querySelector('.page-transition-overlay')) {
-      // 找到其他过渡层但不是保留标记的
-      const otherOverlay = document.querySelector('.page-transition-overlay')
-
-      // 添加淡出动画
-      otherOverlay.style.opacity = '1'
-      otherOverlay.style.transition = 'opacity 0.8s ease'
-
-      setTimeout(() => {
-        otherOverlay.style.opacity = '0'
-
-        // 动画完成后移除元素
-        setTimeout(() => {
-          if (document.body.contains(otherOverlay)) {
-            document.body.removeChild(otherOverlay)
+          if (document.body.contains(existingOverlay)) {
+            document.body.removeChild(existingOverlay)
           }
 
           // 显示页面内容
-          const introContainer = document.querySelector('.intro-container')
           if (introContainer) {
+            introContainer.style.visibility = 'visible'
             introContainer.classList.add('page-loaded')
           }
-        }, 800)
+        }, 650)
       }, 200)
-    } else if (isFromStartPage) {
-      // 如果是从开屏页面过来但没有找到覆盖层，创建一个新的
-      const newOverlay = document.createElement('div')
-      newOverlay.className = 'page-transition-overlay'
-      newOverlay.style.position = 'fixed'
-      newOverlay.style.zIndex = '10000'
-      newOverlay.style.top = '0'
-      newOverlay.style.left = '0'
-      newOverlay.style.width = '100vw'
-      newOverlay.style.height = '100vh'
-      newOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.95)'
-      newOverlay.style.display = 'flex'
-      newOverlay.style.justifyContent = 'center'
-      newOverlay.style.alignItems = 'center'
-      newOverlay.style.transition = 'opacity 0.8s ease'
-
-      const loadingText = document.createElement('div')
-      loadingText.textContent = '正在进入团队介绍...'
-      loadingText.style.color = '#00f3ff'
-      loadingText.style.fontSize = '1.5rem'
-      loadingText.style.fontFamily = 'Share Tech Mono, monospace'
-      loadingText.style.textShadow = '0 0 10px rgba(0, 243, 255, 0.7)'
-
-      newOverlay.appendChild(loadingText)
-      document.body.appendChild(newOverlay)
-
-      // 确保页面内容在初始状态下是隐藏的
-      const introContainer = document.querySelector('.intro-container')
-      if (introContainer) {
-        introContainer.style.opacity = '0'
-      }
-
-      // 等待DOM更新后执行淡出动画
-      setTimeout(() => {
-        newOverlay.style.opacity = '0'
-
-        setTimeout(() => {
-          if (document.body.contains(newOverlay)) {
-            document.body.removeChild(newOverlay)
-          }
-
-          // 显示页面内容
-          if (introContainer) {
-            introContainer.classList.add('page-loaded')
-          }
-        }, 800)
-      }, 500)
     } else {
-      // 如果不是从开屏页面过来，直接显示页面内容
+      // 如果没有过渡层，直接显示页面内容
       const introContainer = document.querySelector('.intro-container')
       if (introContainer) {
         introContainer.classList.add('page-loaded')
@@ -378,13 +359,11 @@ onMounted(() => {
     }
   }
 
-  // 如果DOM已经加载完成，立即处理过渡
-  if (document.readyState === 'complete') {
-    handleTransitionFromStartPage()
-  } else {
-    // 否则等待页面加载完成
-    window.addEventListener('load', handleTransitionFromStartPage)
-  }
+  // 使用requestAnimationFrame优化渲染
+  requestAnimationFrame(() => {
+    // 确保DOM已经渲染
+    setTimeout(handleTransitionFromStartPage, 50)
+  })
 
   // 恢复正常滚动
   document.documentElement.style.overflow = 'auto'
@@ -503,7 +482,7 @@ onUnmounted(() => {
         <div v-for="(item, index) in classIfy" :key="index" class="group-card">
           <div class="card-front">
             <div class="card-icon">
-              <img :src="`/src/assets/${item.className}.png`" :alt="`KingCola-ICG团队${item.className}分组图标`" />
+              <img :src="getIconPath(item.className)" :alt="`KingCola-ICG团队${item.className}分组图标`" />
             </div>
             <h3>{{ item.className }}</h3>
           </div>
@@ -582,30 +561,34 @@ $transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateZ(0);
   }
 
   to {
     opacity: 1;
+    transform: translateZ(0);
   }
 }
 
 @keyframes fadeOut {
   from {
     opacity: 1;
+    transform: translateZ(0);
   }
 
   to {
     opacity: 0;
+    transform: translateZ(0);
   }
 }
 
 @keyframes slideUp {
   from {
-    transform: translateY(30px);
+    transform: translateY(30px) translateZ(0);
   }
 
   to {
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
 }
 
@@ -650,30 +633,20 @@ $transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform: translateY(30px);
   transition: opacity 1.2s ease, transform 1.2s ease;
   will-change: opacity, transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
-/* 页面加载完成动画 */
+/* 页面加载完成动画 - 优化为更简单的动画 */
 .page-loaded {
   opacity: 1 !important;
   transform: translateY(0) !important;
-  animation: pulseIn 0.6s ease-out;
-}
-
-@keyframes pulseIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.96) translateY(30px);
-  }
-
-  70% {
-    opacity: 1;
-    transform: scale(1.02) translateY(0);
-  }
-
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+  will-change: auto;
+  /* 动画结束后释放资源 */
 }
 
 /* 淡出动画 */
@@ -694,17 +667,25 @@ $transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   align-items: center;
   z-index: 9999;
   backdrop-filter: blur(10px);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: opacity;
 }
 
 // 动画效果
 .animate-on-scroll {
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(40px) translateZ(0);
   transition: all 0.8s ease-out;
+  will-change: opacity, transform;
 
   &.animate-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
+    will-change: auto;
+    /* 动画结束后释放资源 */
   }
 }
 

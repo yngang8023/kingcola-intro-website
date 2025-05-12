@@ -1,6 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import frontendIcon from '@/assets/前端开发.png'
+import backendIcon from '@/assets/后端开发.png'
+import mlIcon from '@/assets/机器学习.png'
+import embeddedIcon from '@/assets/嵌入式开发.png'
+import productIcon from '@/assets/产品设计.png'
+import planningIcon from '@/assets/策划运营.png'
 
 const router = useRouter()
 const isLoading = ref(true)
@@ -45,6 +51,21 @@ const classIfy = ref([
   }
 ])
 
+// 图标映射
+const iconMap = {
+  '前端开发': frontendIcon,
+  '后端开发': backendIcon,
+  '机器学习': mlIcon,
+  '嵌入式开发': embeddedIcon,
+  '产品设计': productIcon,
+  '策划运营': planningIcon
+}
+
+// 获取图标路径的函数
+const getIconPath = (className) => {
+  return iconMap[className] || ''
+}
+
 const handleMouseEnter = (index) => {
   activeIndex.value = index
 }
@@ -61,6 +82,12 @@ const handleApply = (className) => {
 }
 
 onMounted(() => {
+  // 为提高性能，预加载图标
+  Object.values(iconMap).forEach(iconSrc => {
+    const img = new Image();
+    img.src = iconSrc;
+  });
+
   setTimeout(() => {
     isLoading.value = false
   }, 500)
@@ -79,7 +106,7 @@ onMounted(() => {
         @mouseleave="handleMouseLeave()" :class="{ 'card-active': activeIndex === index }">
         <div class="card-content" :style="{ '--card-color': item.color }">
           <div class="card-icon">
-            <img :src="`/src/assets/${item.className}.png`" :alt="item.className" />
+            <img :src="getIconPath(item.className)" :alt="item.className" />
           </div>
           <div class="card-title">
             {{ item.className }}
@@ -202,7 +229,7 @@ onMounted(() => {
   }
 
   &.card-active {
-    transform: translateY(-10px);
+    transform: translateY(-10px) translateZ(0);
 
     .card-content {
       box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2),
@@ -213,7 +240,7 @@ onMounted(() => {
       }
 
       .card-icon img {
-        transform: scale(1.1);
+        transform: scale(1.1) translateZ(0);
       }
     }
   }
@@ -234,6 +261,8 @@ onMounted(() => {
     inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   overflow: hidden;
   transition: all 0.3s ease-in-out;
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
 
   &::before {
     content: '';
@@ -310,22 +339,44 @@ onMounted(() => {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(20px) translateZ(0);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
 }
 
 .card-wrapper {
   animation: fadeIn 0.5s ease-out forwards;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 
   @for $i from 1 through 6 {
     &:nth-child(#{$i}) {
       animation-delay: #{$i * 0.1}s;
     }
+  }
+
+  &:nth-child(6) {
+    animation-fill-mode: forwards;
+    animation-delay: 0.6s;
+    animation-name: fadeInLast;
+  }
+}
+
+@keyframes fadeInLast {
+  from {
+    opacity: 0;
+    transform: translateY(20px) translateZ(0);
+    will-change: transform, opacity;
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+    will-change: auto;
   }
 }
 </style>
